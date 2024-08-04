@@ -14,6 +14,7 @@
 2. At least 400 GB of free disk space to check out and build the code (250 GB to check out + 150 GB to build).
 3. Minimum 32GB RAM. Increase the swap size to 32GB on Ubuntu using [this guide](https://linuxhandbook.com/increase-swap-ubuntu/).
 4. Stable, unrestricted, and fast internet.
+5. Raspberry Pi 5 and SD card of minimum 16GB in size.
 
 ### How to Build
 1. Establish Android build environment and install repo. Follow instructions [here](https://source.android.com/docs/setup/start/requirements).
@@ -71,17 +72,52 @@ You can find full guide for other builds like android, android tv, android autom
 3. [Linux Handbook](https://linuxhandbook.com/)
 
 ---
+## II) App for Android Automotive:
 
-## II) CCTV Setup
+### Functionalities
+1. UI provides a buttton to toggle between D(Drive) or P(Park) mode.
+2. The app receives the URL from the CCTV whenever its hosted and notifies about it.
+3. Driver can stream the url with a stream button if vehicle is in park mode.
+4. Whenever motion is detected on the CCTV, a notification is popped with 2 options, ignore and stream.
+5. To stream the URL the toggle needs to be in P mode otherwise D mode alert is given via notification.
+
+### Requirements
+1. Android Studio with required SDKs installed.
+2. Pushy API account.
+
+### How to Set Up
+1. Use Android Studio and set it up for development, create a new project.
+
+2. Setup API:
+    - Go to the Pushy API [dashboard](https://pushy.me/docs/api) and create an app.
+    - Name it same as the project/app name in Android Studio.
+    - Enter the package name wherever prompted.
+    - Make a note of secret api key from the application section.
+
+3. Setup API in the app and develop the app:
+    - All these steps are done and you can find the codes above.
+    - Copy all the files in your project directory accordingly.
+    - Change the package name to your app name wherever needed(thirdeyecar here).
+    - Follow Pushy [docs](https://pushy.me/docs/android/create-app) to setup the client.(done above)
+
+4. Connect the Raspberry Pi 5 with ADB wirelessly to deploy apps:
+    - Make sure your development machine/PC having Android Studio and Raspberry Pi 5 are on the same network.
+    - Open terminal and type `adb connect <ip_address_of_pi5>`
+    - You can find ipaddress of pi5 from the WiFi settings in android settings of the device itself.
+    - Android Studio will automatically detect the device, and you are now ready to deploy apps.
+
+6. Run the app.
+    - This will generate a device token. Take note of this since it is used for communication with the CCTV. It changes if you uninstall and reinstall the app. It does not change for every run in the studio.
+    - For the first run you will get a device token , take a note of this. This can also be found in the adb logcat in Android Studio.
+   
+---
+
+## III) CCTV Setup
 
 ### Features
 - Streams live CCTV footage from Raspberry Pi 4.
 
----
-
-## III) App
-
-- Built an app for Android Automotive 14 which streams live CCTV footage from anywhere when motion is detected.
+### How to setup
+- Use the device token generated from the app and secret api from the pushy api dashboard for communication.
 
 ---
-
