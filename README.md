@@ -62,9 +62,11 @@
     This should create a bootable image file of size 7GB.
 
     You can find my build image of the above here: ---
+9. Download the Raspberry Pi [imager](https://www.raspberrypi.com/software/) and follow the [instructions](https://www.raspberrypi.com/documentation/computers/getting-started.html#install-using-imager) to flash the image onto the sdcard. Use the sd card to boot up the Pi5.
 
+You can find full guide for other builds like android, android tv, android automotive for both rpi4 and rpi5 [here](https://github.com/raspberry-vanilla/android_local_manifest)
 ### References
-1. [AOSP website](https://source.android.com/)
+1. [AOSP Android Open Source Project](https://source.android.com/)
 2. [Raspberry Pi Vanilla Git (Konsta T)](https://github.com/raspberry-vanilla)
 3. [Linux Handbook](https://linuxhandbook.com/)
 
