@@ -145,20 +145,18 @@ Motion is the key software used for turning the Raspberry Pi into a surveillance
    ```
 3. Configure Motion:
      - Open the Motion configuration file:
-       ```bash
-       sudo nano /etc/motion/motion.conf
-       ```
-       - Key configurations to update:
-         ```bash
-         daemon on
-         stream_localhost off
-         stream_port 8081
-         videodevice /dev/video0
-         on_motion_detected curl -X POST "https://api.pushy.me/push?api_key=your_secret_api_key" -H "Content-Type: application/json" -d '{"to":"your_device_token","data":{"message":"Motion Detected!"}}'
-
-         ```
-         Replace "your_secret_api_key" with your actual Pushy API secret key and "your_device_token" with the device token from your Android Automotive app.
-         For further Motion config file setup refer [here](https://motion-project.github.io/motion_config.html#movie_output).
+   ```bash
+   sudo nano /etc/motion/motion.conf
+   ```
+    -Key configurations to update:
+   ```bash
+   daemon on
+   stream_localhost off
+   stream_port 8081
+   videodevice /dev/video0
+   on_motion_detected curl -X POST "https://api.pushy.me/push?api_key=your_secret_api_key" -H "Content-Type: application/json" -d '{"to":"your_device_token","data":{"message":"Motion Detected!"}}'
+    ```
+    Replace "your_secret_api_key" with your actual Pushy API secret key and "your_device_token" with the device token from your Android Automotive app. For further Motion config file setup refer [here](https://motion-project.github.io/motion_config.html#movie_output).
          
 4. Start Motion Service:
    ```bash
@@ -173,16 +171,16 @@ Ngrok allows remote access to your CCTV stream from anywhere.
 -Should be done in a new terminal.
 1. Install Ngrok:
    - Download and install:
-     ```bash
-     wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.zip
-     unzip ngrok-stable-linux-arm.zip
-     sudo mv ngrok /usr/local/bin/
+   ```bash
+   wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.zip
+   unzip ngrok-stable-linux-arm.zip
+   sudo mv ngrok /usr/local/bin/
    ```
 3. Authenticate Ngrok:
    - Obtain your authentication token from [Ngrok's website](https://ngrok.com/) and run:
-     ```bash
-     ngrok authtoken <your_auth_token>
-     ```
+   ```bash
+   ngrok authtoken <your_auth_token>
+   ```
 4. Start the Ngrok Tunnel:
 ```bash
 ngrok http 8081
