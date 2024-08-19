@@ -111,13 +111,83 @@ You can find full guide for other builds like android, android tv, android autom
     - For the first run you will get a device token , take a note of this. This can also be found in the adb logcat in Android Studio.
    
 ---
-
+      
 ## III) CCTV Setup
-
+This section outlines the steps to setup a CCTV system using a Raspberry Pi 4, allowing it to stream live footage, detect motion, and integrate with an Android Automotive 14 app.
 ### Features
 - Streams live CCTV footage from Raspberry Pi 4.
+- Detects motion and sends notifications to the Android Automotive app.
+- Allows remote access and streaming via Ngrok.
+- Integrates with the app using Pushy API for secure communication.
+### Requirements
+1. Hardware:
+   - Raspberry Pi 4 with Raspbian OS installed.
+   - USB Webcam.
+   - MicroSD Card (at least 16GB) with Raspbian OS.
+   - Power Supply for Raspberry Pi 4.
+   - Stable internet connection.
+   - Monitor, Keyboard, Mouse.
+2. Software:
+   - Motion software for video streaming and motion detection.
+   - Ngrok for secure remote access.
+   - Pushy API for notificaton management.
+### Step-by-Step-Setup
+#### 1. Install and Configure Motion
+Motion is the key software used for turning the Raspberry Pi into a surveillance camera.
+1. Update and Upgrade Raspberry Pi:
+   ```bash
+   sudo apt-get update
+   sudo apt-get upgrade
+   ```
+2. Install Motion:
+   ```bash
+   sudo apt-get install motion
+   ```
+3. Configure Motion:
+     - Open the Motion configuration file:
+       ```bash
+       sudo nano /etc/motion/motion.conf
+       ```
+       - Key configurations to update:
+         ```bash
+         daemon on
+         stream_localhost off
+         stream_port 8081
+         videodevice /dev/video0
+         on_motion_detected curl -X POST "https://api.pushy.me/push?api_key=your_secret_api_key" -H "Content-Type: application/json" -d '{"to":"your_device_token","data":{"message":"Motion Detected!"}}'
 
-### How to setup
-- Use the device token generated from the app and secret api from the pushy api dashboard for communication.
+         ```
+         Replace "your_secret_api_key" with your actual Pushy API secret key and "your_device_token" with the device token from your Android Automotive app.
+         For further Motion config file setup refer [here](https://motion-project.github.io/motion_config.html#movie_output).
+         
+4. Start Motion Service:
+   ```bash
+   sudo systemctl start motion
+   ```
+   To check motion log
+   ```bash
+   sudo systemctl status motion
+   ```
+#### 2. Set Up Ngrok for Remote Access
+Ngrok allows remote access to your CCTV stream from anywhere.
+-Should be done in a new terminal.
+1. Install Ngrok:
+   - Download and install:
+     ```bash
+     wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.zip
+     unzip ngrok-stable-linux-arm.zip
+     sudo mv ngrok /usr/local/bin/
+   ```
+3. Authenticate Ngrok:
+   - Obtain your authentication token from [Ngrok's website](https://ngrok.com/) and run:
+     ```bash
+     ngrok authtoken <your_auth_token>
+     ```
+4. Start the Ngrok Tunnel:
+```bash
+ngrok http 8081
+```
+-This will provide a public URL for remote access.
 
 ---
+## IV) Testing
